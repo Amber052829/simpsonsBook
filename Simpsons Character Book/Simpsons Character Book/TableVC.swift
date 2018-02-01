@@ -38,7 +38,7 @@ class TableVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         bart.image = UIImage(named: "bart.png")!
         
         let marge = Simpson()
-        marge.name = "Homer Simpson"
+        marge.name = "Marge Simpson"
         marge.occupation = "Homermaker"
         marge.image = UIImage(named: "marge.png")!
         
@@ -54,7 +54,27 @@ class TableVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         
     }
     
+    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        return true
+    }
+    func tableView(_ tableView: UITableView, commit editingStyle:   UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+        if (editingStyle == .delete) {
+            mySimpsons.remove(at: indexPath.row)
+            tableView.beginUpdates()
+            tableView.deleteRows(at: [indexPath], with: .middle)
+            tableView.endUpdates()
+        }
+    }
     
+
+//    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+//        //tableView element deletion
+//        if editingStyle == .delete {
+//            mySimpsons.remove(at: indexPath.row)
+//            mySimpsons.remove(at: indexPath.row)
+//            tableView.deleteRows(at: [indexPath], with: UITableViewRowAnimation.fade)
+//        }
+//    }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return mySimpsons.count
@@ -71,11 +91,11 @@ class TableVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "toDetailVC"
+        if segue.identifier == "toDetailVC" {
         let destinationVC = segue.destination as! DetailVC
         destinationVC.selectedSimpson = self.chosenSimpson
     }
-
+    }
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         self.chosenSimpson = mySimpsons[indexPath.row]
         self.performSegue(withIdentifier: "toDetailVC", sender: nil)
